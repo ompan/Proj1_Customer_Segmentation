@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Segmentation Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Customer Segmentation Dashboard</h1>
+
+        <!-- Scatter Plot -->
+        <div class="mt-4">
+            <h2>Clustered Scatter Plot</h2>
+            <div id="scatterPlot"></div>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="mt-4">
+            <h2>Customer Distribution Bar Chart</h2>
+            <div id="barChart"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // Directly assign the Flask-passed JSON data to variables
+        var scatter_data = {{ scatter_plot | safe }};
+        var bar_data = {{ bar_chart | safe }};
+
+        // Debug: Log the data to the console to ensure it is correctly passed
+        console.log("Scatter Plot Data:", scatter_data);
+        console.log("Bar Chart Data:", bar_data);
+
+        // Plotly scatter plot
+        Plotly.newPlot('scatterPlot', scatter_data.data, scatter_data.layout);
+
+        // Plotly bar chart
+        Plotly.newPlot('barChart', bar_data.data, bar_data.layout);
+    </script>
+</body>
+</html>

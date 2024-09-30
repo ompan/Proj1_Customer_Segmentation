@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Segmentation Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">Customer Segmentation Dashboard</h1>
+
+        <!-- Segment Filter -->
+        <div class="form-group">
+            <label for="segmentFilter">Filter by Segment:</label>
+            <select id="segmentFilter" class="form-control">
+                <option value="All">All</option>
+                {% for segment in segments %}
+                    <option value="{{ segment }}">{{ segment }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Pie Chart for Customer Segment Distribution -->
+        <h2>Segment Distribution</h2>
+        <div id="pieChart"></div>
+        
+        <!-- Bar Chart for Feature Analysis -->
+        <h2>Customer Feature Analysis</h2>
+        <div id="barChart"></div>
+    </div>
+
+    <script type="text/javascript">
+        function updateCharts(segment) {
+            fetch('/filter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `segment=${segment}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                var pieChart = JSON.parse(data.pie_chart);
+                Plotly.newPlot('pieChart', pieChart.data, pieChart.layout);
+
+                var barChart = JSON.parse(data.bar_chart);
+                Plotly.newPlot('barChart', barChart.data, barChart.layout);
+            });
+        }
+
+        // Trigger filter change on dropdown selection
+        document.getElementById('segmentFilter').addEventListener('change', function() {
+            var segment = this.value;
+            updateCharts(segment);
+        });
+    </script>
+</body>
+</html>
+
+    
+    <!-- KPI Section -->
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Total Customers</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ total_customers }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Average Feature1</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ avg_feature1 }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">Average Feature2</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ avg_feature2 }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
