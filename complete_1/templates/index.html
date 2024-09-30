@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Customer Segmentation</title>
+</head>
+<body>
+    <h1>Customer Segmentation Dashboard</h1>
+
+    <!-- Form for dynamic input -->
+    <form method="POST">
+        <label for="num_clusters">Number of Clusters:</label>
+        <input type="number" name="num_clusters" value="{{ num_clusters }}" min="1" max="10">
+        <input type="submit" value="Update Clusters">
+    </form>
+
+    <!-- Display the plot -->
+    <h2>Cluster Plot</h2>
+    <img src="data:image/png;base64, {{ plot_url }}">
+
+    <form method="POST">
+        <label for="num_clusters">Number of Clusters:</label>
+        <input type="number" name="num_clusters" value="{{ num_clusters }}" min="1" max="10"><br>
+    
+        <label for="income_range">Select Income Range:</label>
+        <input type="number" name="min_income" placeholder="Min Income">
+        <input type="number" name="max_income" placeholder="Max Income"><br>
+    
+        <input type="submit" value="Update Clusters">
+    </form>
+    
+</body>
+</html>
